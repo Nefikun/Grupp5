@@ -1,0 +1,1355 @@
+{
+	"info": {
+		"_postman_id": "d09f4d57-360b-4b9f-bd30-01e22278ea96",
+		"name": "Swagger Pet Store API Testing",
+		"description": "Group 4 (Nico, Rafi and Zaya).\n\nHere you can find the documentation of the collection using sample server [Swagger Petstore](https://petstore.swagger.io/#/).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "25184088",
+		"_collection_link": "https://galactic-escape-460230.postman.co/workspace/Group-5~ed64f46e-c053-45d4-a76d-c697e949e75a/collection/25200306-d09f4d57-360b-4b9f-bd30-01e22278ea96?action=share&source=collection_link&creator=25184088"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "CreateUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Check status code and response\", function () {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        pm.response.to.have.status(200);\r",
+									"        console.log(\"Status code 200\");    }\r",
+									"      else {\r",
+									"        console.error(\"Status code is not 200, it is \" + pm.response.code);\r",
+									"    }});\r",
+									"\r",
+									"//Validate Content-type header\r",
+									"pm.test(\"Validate Content-Type header\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    var expectedContentType = \"application/json\";\r",
+									"    pm.expect(contentType).to.equal(expectedContentType);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"username\": \"NicoS\",\r\n  \"firstName\": \"Nicolas\",\r\n  \"lastName\": \"Santana\",\r\n  \"email\": \"Nico@gmail.com,\",\r\n  \"password\": \"1234\",\r\n  \"phone\": \"07003\",\r\n  \"userStatus\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user",
+						"description": "The purpose of this **POST** request is to create a new user. In the body section we add all the information related to the user such as **\"id\", \"username\", \"firstName\", \"lastName\", \"email\", \"password\", \"phone\", \"userStatus\"** in raw JSON format. Once we send the request, we expect to recceive a response in JSON format with status code 202 where the body includes **\"code\", \"type\", \"message\".**"
+					},
+					"response": [
+						{
+							"name": "CreateUser",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 0,\r\n  \"username\": \"NicoS\",\r\n  \"firstName\": \"Nicolas\",\r\n  \"lastName\": \"Santana\",\r\n  \"email\": \"Nico@gmail.com,\",\r\n  \"password\": \"1234\",\r\n  \"phone\": \"07003\",\r\n  \"userStatus\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/user"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 11:18:15 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"type\": \"unknown\",\n    \"message\": \"9223372036854775807\"\n}"
+						}
+					]
+				},
+				{
+					"name": "GetInfoAboutUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the expected data points and JSON structure\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an('object');\r",
+									"    pm.expect(jsonData).to.have.property('id').that.is.a('number');\r",
+									"    pm.expect(jsonData).to.have.property('username').that.is.a('string');\r",
+									"    pm.expect(jsonData).to.have.property('firstName').that.is.a('string');\r",
+									"    pm.expect(jsonData).to.have.property('lastName').that.is.a('string');\r",
+									"    pm.expect(jsonData).to.have.property('email').that.is.a('string');\r",
+									"    pm.expect(jsonData).to.have.property('password').that.is.a('string');\r",
+									"    pm.expect(jsonData).to.have.property('phone').that.is.a('string');\r",
+									"    pm.expect(jsonData).to.have.property('userStatus').that.is.a('number');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/NicoS",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"NicoS"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "NicoS",
+									"disabled": true
+								}
+							]
+						},
+						"description": "The purpose of this **GET** request is to retrieve all the information linked to a certain user by username. If the request went successfully, we will receive the following information such as **\"id\", \"username\", \"firstName\", \"lastName\", \"email\", \"password\", \"phone\", \"userStatus\"** in our response body."
+					},
+					"response": [
+						{
+							"name": "GetInfoAboutUser",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/NicoS",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"NicoS"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "NicoS",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 12:04:51 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 9223372036854775807,\n    \"username\": \"NicoS\",\n    \"firstName\": \"Nicolas\",\n    \"lastName\": \"Santana\",\n    \"email\": \"Nico@gmail.com,\",\n    \"password\": \"1234\",\n    \"phone\": \"07003\",\n    \"userStatus\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "UpdateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 9223372036854769908,\r\n  \"username\": \"NicoD\",\r\n  \"firstName\": \"Nicolas\",\r\n  \"lastName\": \"Delete\",\r\n  \"email\": \"Nico@gmail.com\",\r\n  \"password\": \"1234\",\r\n  \"phone\": \"07003\",\r\n  \"userStatus\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/NicoS",
+						"description": "With **PUT** request its supposed to update an already existing user with help of the username, this is only available if the user is already logged in. We understand that **PUT** request is used to replace an entire resource, while **PATCH** is used for partial updates."
+					},
+					"response": [
+						{
+							"name": "UpdateUser",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 9223372036854769908,\r\n  \"username\": \"NicoD\",\r\n  \"firstName\": \"Nicolas\",\r\n  \"lastName\": \"Delete\",\r\n  \"email\": \"Nico@gmail.com\",\r\n  \"password\": \"1234\",\r\n  \"phone\": \"07003\",\r\n  \"userStatus\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/user/NicoS"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 12:05:13 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"type\": \"unknown\",\n    \"message\": \"9223372036854769908\"\n}"
+						}
+					]
+				},
+				{
+					"name": "LogInUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/login?username=NicoS&password=1234",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "NicoS"
+								},
+								{
+									"key": "password",
+									"value": "1234"
+								}
+							]
+						},
+						"description": "The purpose of this request is to log in the user using the query parameters Username and Password. Apart from the query parameters, request body is not required. If the operation is successful, we will receive **\"code\",** **\"type\"** and **\"message\"** in the response body."
+					},
+					"response": [
+						{
+							"name": "LogInUser",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/login?username=NicoS&password=1234",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"login"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "NicoS"
+										},
+										{
+											"key": "password",
+											"value": "1234"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 11:19:49 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "X-Expires-After",
+									"value": "Fri Sep 08 12:19:49 UTC 2023"
+								},
+								{
+									"key": "X-Rate-Limit",
+									"value": "5000"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"type\": \"unknown\",\n    \"message\": \"logged in user session:1694171989404\"\n}"
+						}
+					]
+				},
+				{
+					"name": "SignOutUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Check if the response time is less than 200ms\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/logout",
+						"description": "The purpose of this request is to logout the user that is already logged in. The request body remains empty meanwhile in the response body we receive **\"code\"**, **\"type\"** and **\"message\"** with status code 200 OK if the operation goes successful."
+					},
+					"response": [
+						{
+							"name": "SignOutUser",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/user/logout"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 12:05:31 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"type\": \"unknown\",\n    \"message\": \"ok\"\n}"
+						}
+					]
+				},
+				{
+					"name": "DeleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/user/NicoD",
+						"description": "The purpose of this request is to delete the user that is already logged in. The request body remains empty meanwhile in the response body we receive **\"code\"**, **\"type\"** and **\"message\"** with status code 200 OK if the operation goes successful."
+					},
+					"response": [
+						{
+							"name": "DeleteUser",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{baseUrl}}/user/NicoD"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 12:05:48 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"type\": \"unknown\",\n    \"message\": \"NicoD\"\n}"
+						}
+					]
+				}
+			],
+			"description": "In this folder we collected the requests connected to 'User'."
+		},
+		{
+			"name": "Pet",
+			"item": [
+				{
+					"name": "CreatePet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test status codes to ensure correct responses.",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate response headers.",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"// Validate the JSON structure of the response.",
+									"pm.test(\"JSON structure is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"category\": {\r\n    \"id\": 2,\r\n    \"name\": \"Cat\"\r\n  },\r\n  \"name\": \"Cats\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 2,\r\n      \"name\": \"Cutecat\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}'",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/pet",
+						"description": "With this POST request we ask to create a new pet. In the body there is different data points you fill that its required. ID, name, status etc. The response that we are supposed to get its the same data points we filled in earlier."
+					},
+					"response": [
+						{
+							"name": "CreatePet",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 2,\r\n  \"category\": {\r\n    \"id\": 2,\r\n    \"name\": \"Cat\"\r\n  },\r\n  \"name\": \"Cats\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 2,\r\n      \"name\": \"Cutecat\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}'",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/pet"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 12:04:42 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 2,\n    \"category\": {\n        \"id\": 2,\n        \"name\": \"Cat\"\n    },\n    \"name\": \"Cats\",\n    \"photoUrls\": [\n        \"string\"\n    ],\n    \"tags\": [\n        {\n            \"id\": 2,\n            \"name\": \"Cutecat\"\n        }\n    ],\n    \"status\": \"available\"\n}"
+						}
+					]
+				},
+				{
+					"name": "GetInfoPetID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check specific data points like pet name",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Cat\");",
+									"});",
+									"",
+									"// Check response time.",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"console.log(\"I am just testing the console log\");",
+									"",
+									"// Validate response headers.",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/pet/2",
+						"description": "In this request we use the GET request to get all the info about an already existing pet with help with the ID. The ID is put in the URL. The response that is expected is all the datapoints for the pet. ID, name, status etc."
+					},
+					"response": [
+						{
+							"name": "GetInfoPetID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{baseUrl}}/pet/1"
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 12:04:51 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1,\n    \"type\": \"error\",\n    \"message\": \"Pet not found\"\n}"
+						}
+					]
+				},
+				{
+					"name": "UpdatePet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Get the value of the environmental variable 'baseUrl'",
+									"var baseUrl = pm.environment.get(\"baseUrl\");",
+									"",
+									"// Assert that the value of the 'baseUrl' environmental variable is as expected",
+									"pm.test(\"Environmental Variable Test works\", function() {",
+									"    pm.expect(baseUrl).to.eql(\"https://petstore.swagger.io/v2\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"category\": {\r\n    \"id\": 2,\r\n    \"name\": \"Horse\"\r\n  },\r\n  \"name\": \"Slow\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/pet",
+						"description": "To update an already existing pet in the system we use the PUT request. In the body request you put in the ID of the pet you want to update info about. The response we expect to get is the new info we have updated about the pet."
+					},
+					"response": [
+						{
+							"name": "UpdatePet",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 3,\r\n  \"category\": {\r\n    \"id\": 2,\r\n    \"name\": \"Horse\"\r\n  },\r\n  \"name\": \"Slow\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/pet"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 12:05:01 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 3,\n    \"category\": {\n        \"id\": 2,\n        \"name\": \"Horse\"\n    },\n    \"name\": \"Slow\",\n    \"photoUrls\": [\n        \"string\"\n    ],\n    \"tags\": [\n        {\n            \"id\": 0,\n            \"name\": \"string\"\n        }\n    ],\n    \"status\": \"available\"\n}"
+						}
+					]
+				},
+				{
+					"name": "DeletePet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/pet/2",
+						"description": "Here we use DELETE request to delete an already existing pet with ID. The ID of the pet you want to delete you put in the URL. The expected result is that we get status code 200, type and a message with the ID of the deleted pet."
+					},
+					"response": [
+						{
+							"name": "DeletePet",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/pet/3"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 12:05:10 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"type\": \"unknown\",\n    \"message\": \"3\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "PlaceStoreOrder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response time is less than 200ms', function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Content-Type header is JSON', function () {\r",
+									"    pm.response.to.have.header('Content-Type', 'application/json');\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Place order\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData)\r",
+									"});\r",
+									"\r",
+									"\r",
+									"console.log(responseBody);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"petId\": 2,\r\n  \"quantity\": 1,\r\n  \"shipDate\": \"2023-09-06T11:26:09.744Z\",\r\n  \"status\": \"placed\",\r\n  \"complete\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/store/order",
+						"description": "This request posts an order in store containing a pet. Generating an ID for the order. Must be able to use an ID from a registered pet. You can also specify the quantity, ship date and status for the order."
+					},
+					"response": [
+						{
+							"name": "PlaceStoreOrder",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 1,\r\n  \"petId\": 2,\r\n  \"quantity\": 1,\r\n  \"shipDate\": \"2023-09-06T11:26:09.744Z\",\r\n  \"status\": \"placed\",\r\n  \"complete\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/store/order"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 11:18:19 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"petId\": 2,\n    \"quantity\": 1,\n    \"shipDate\": \"2023-09-06T11:26:09.744+0000\",\n    \"status\": \"placed\",\n    \"complete\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "GetStoreOrderByID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is JSON\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/store/order/1",
+						"description": "You can view the contents of a specific order by using its ID."
+					},
+					"response": [
+						{
+							"name": "GetStoreOrderByID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{baseUrl}}/store/order/1"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 12:05:16 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"petId\": 2,\n    \"quantity\": 1,\n    \"shipDate\": \"2023-09-06T11:26:09.744+0000\",\n    \"status\": \"placed\",\n    \"complete\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "DeleteStoreOrderByID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/store/order/1",
+						"description": "This request is used for deleting orders by their ID's."
+					},
+					"response": [
+						{
+							"name": "DeleteStoreOrderByID",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{baseUrl}}/store/order/1"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 12:05:27 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"type\": \"unknown\",\n    \"message\": \"1\"\n}"
+						}
+					]
+				},
+				{
+					"name": "GetStoreInventory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is JSON\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/store/inventory",
+						"description": "Get an overview of all the orders, and a display of the statistics of the \"store\"."
+					},
+					"response": [
+						{
+							"name": "GetStoreInventory",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{baseUrl}}/store/inventory"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 12:05:34 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"sold\": 11,\n    \"string\": 282,\n    \"unavailable\": 5,\n    \"pending\": 5,\n    \"available\": 671,\n    \"working\": 1\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": {
+			"value": "special-key",
+			"key": "Authorization"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
